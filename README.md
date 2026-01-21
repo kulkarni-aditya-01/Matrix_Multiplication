@@ -19,8 +19,13 @@ The naive row–column access order exhibits weak spatial and temporal locality,
 <H3>3.Execution Time Impact at Large Scale </H3>
 Due to the combined effects of high computation complexity and poor locality, multiplying matrices of size <b>2000×2000</b> resulted in an execution time of <b>260+ seconds</b> on the test platform, demonstrating how cache behavior and memory access patterns dominate performance in naive matrix multiplication.
 
-<H4>4. Tiling into the Array</H4>
+<H3>4. Tiling into the Array</H3>
 This is mostly worked efficitively on the cache optimization. The tile of the 64*64 size block help to access the whole cache dataline at a time and prevent the thrashing on the very high demand. But it cause a over head on a L2 and L3 cache such as a data is continuosly changing and access pattern where the 2000*2000 array is too big. But it help too much for the optimization. 
 Such it help to boost the speed for the 2000*2000 array multiplication by the 5X as comapred to the simple matrix multiplication 
 
-
+**List of the pragma that will help definitely** : 
+```bash``` 
+<H4>#pragma omp parallel for : this will make the for loop into the parallel section but only outer loop no the inner loop, so it cause overhead of the nested loops to a each and every thread</H4>
+<H4>#pragma omp parallel for schedule(static)</H4>
+<H4>#pragma omp tile (64*64*64) // three time beacuse 3 loop are nested there</H4>
+<H4>I have not used but you can make a statment on the loop unrolling, loop collapse and cache accesing for the multithreading so it will work on Instruction Level Paralleslism to boost performance</H4>
