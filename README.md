@@ -22,11 +22,23 @@ Due to the combined effects of high computation complexity and poor locality, mu
 <H3>4. Tiling into the Array</H3>
 This is mostly worked efficitively on the cache optimization. The tile of the 64*64 size block help to access the whole cache dataline at a time and prevent the thrashing on the very high demand. But it cause a over head on a L2 and L3 cache such as a data is continuosly changing and access pattern where the 2000*2000 array is too big. But it help too much for the optimization. 
 Such it help to boost the speed for the 2000*2000 array multiplication by the 5X as comapred to the simple matrix multiplication 
+<hr> 
+<br> 
 
 **List of the pragma that will help definitely** : 
 ```bash
-<H4>#pragma omp parallel for : this will make the for loop into the parallel section but only outer loop no the inner loop, so it cause overhead of the nested loops to a each and every thread</H4>
-<H4>#pragma omp parallel for schedule(static)</H4>
-<H4>#pragma omp tile (64*64*64) // three time beacuse 3 loop are nested there</H4>
-<H4>I have not used but you can make a statment on the loop unrolling, loop collapse and cache accesing for the multithreading so it will work on Instruction Level Paralleslism to boost performance</H4>
+#pragma omp parallel for : this will make the for loop into the parallel section but only outer loop no a inner loop, so it cause overhead of the nested loops to a each and every thread
+#pragma omp parallel for schedule(static)
+#pragma omp tile (64*64*64) // three time beacuse 3 loop are nested there
+I have not used but you can make a statment on the loop unrolling, loop collapse and cache accesing for the multithreading so it will work on Instruction Level Paralleslism to boost performance
+```
+<hr>
+<br>
+<H3>/ANALYSIS directory : </H3>
+You will find there a LLVM_IR a most useful content for me while learning the loop tiling and other part of it<br> This help to understand a structure of LLVM-IR and resolve a complex dependency in the program<br> 
+Here is the most powerful tool for the frontend analysis of the workflow of nay function across a LLVM IR file we use a <H1>CFG</H1> 
+<br> 
+
+```bash
+cmd : opt -passes=dot-cfg -disable-output file_name.ll 
 ```
