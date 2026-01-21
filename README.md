@@ -1,0 +1,21 @@
+# Matrix Multiplication — Performance Overview
+
+## 🛠 Build Configuration
+
+To compile the code with **OpenMP support**, **ThreadSanitizer**, **debug symbols**, and **optimizations**:
+
+**Command:**
+
+```bash
+/usr/bin/clang _01_Matrix_Multiplication.c -fopenmp -fsanitize=thread -g -O2 -o _01_Matrix_Multiplication_c
+```
+Performance & Architectural Observations :
+<H3> 1.Naive O(N³) Computation Model </H3>
+The current implementation uses a simple triple-nested loop for computing <b>C = A × B, leading to a time complexity of O(N³)</b>. While straightforward, this results in extremely high computational load for large N and produces immense memory traffic across the CPU cache hierarchy.
+
+<H3> 2. Poor Cache Utilization (L1 & L2 Cache Pressure) </H3>H3>
+The naive row–column access order exhibits weak spatial and temporal locality, leading to frequent L1 and L2 cache evictions. Due to these cache misses, the processor repeatedly fetches data from higher-latency memory levels, significantly degrading throughput and effective FLOPS.
+    
+<H3>3.Execution Time Impact at Large Scale </H3>
+Due to the combined effects of high computation complexity and poor locality, multiplying matrices of size <b>2000×2000</b> resulted in an execution time of <b>260+ seconds</b> on the test platform, demonstrating how cache behavior and memory access patterns dominate performance in naive matrix multiplication.
+
