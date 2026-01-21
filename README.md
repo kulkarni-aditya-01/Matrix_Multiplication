@@ -24,8 +24,9 @@ This is mostly worked efficitively on the cache optimization. The tile of the 64
 Such it help to boost the speed for the 2000*2000 array multiplication by the 5X as comapred to the simple matrix multiplication 
 
 **List of the pragma that will help definitely** : 
-```bash``` 
+```bash
 <H4>#pragma omp parallel for : this will make the for loop into the parallel section but only outer loop no the inner loop, so it cause overhead of the nested loops to a each and every thread</H4>
 <H4>#pragma omp parallel for schedule(static)</H4>
 <H4>#pragma omp tile (64*64*64) // three time beacuse 3 loop are nested there</H4>
 <H4>I have not used but you can make a statment on the loop unrolling, loop collapse and cache accesing for the multithreading so it will work on Instruction Level Paralleslism to boost performance</H4>
+```
